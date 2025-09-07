@@ -1,0 +1,127 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno then run `deno lint` and `deno test`.
+# For more information see: https://github.com/denoland/setup-deno
+
+name: Deno
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        # uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+        with:
+          deno-version: v1.x
+
+      # Uncomment this step to verify the use of 'deno fmt' on each commit.
+      # - name: Verify formatting
+      #   run: deno fmt --check
+
+      - name: Run linter
+        run: deno lint
+
+      - name: Run tests
+        run: deno test -A
+            - name: Download a Build Artifact
+  uses: actions/download-artifact@v4.3.0
+  with:
+    # Name of the artifact to download. If unspecified, all artifacts for the run are downloaded.
+    name: # optional
+    # IDs of the artifacts to download, comma-separated. Either inputs `artifact-ids` or `name` can be used, but not both.
+    artifact-ids: # optional
+    # Destination path. Supports basic tilde expansion. Defaults to $GITHUB_WORKSPACE
+    path: # optional
+    # A glob pattern matching the artifacts that should be downloaded. Ignored if name is specified.
+    pattern: # optional
+    # When multiple artifacts are matched, this changes the behavior of the destination directories. If true, the downloaded artifacts will be in the same directory specified by path. If false, the downloaded artifacts will be extracted into individual named directories within the specified path.
+    merge-multiple: # optional, default is false
+    # The GitHub token used to authenticate with the GitHub API. This is required when downloading artifacts from a different repository or from a different workflow run. If this is not specified, the action will attempt to download artifacts from the current repository and the current workflow run.
+    github-token: # optional
+    # The repository owner and the repository name joined together by "/". If github-token is specified, this is the repository that artifacts will be downloaded from.
+    repository: # optional, default is ${{ github.repository }}
+    # The id of the workflow run where the desired download artifact was uploaded from. If github-token is specified, this is the run that artifacts will be downloaded from.
+    
+    run-id: # optional, default is ${{ github.run_id }}
+                - name: Trello Card & GitHub PR Integration
+  # You may pin to the exact commit or the version.
+  # uses: rematocorp/trello-integration-action@dcdbf3638f8fef16118d3619e0e08a5db2f4ba0a
+  uses: rematocorp/trello-integration-action@v9.9.0
+  with:
+    # Github token, https://docs.github.com/en/actions/reference/authentication-in-a-workflow.
+    github-token: 
+    # When set to true, match only URLs prefixed with “Closes” etc. Just like https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword.
+    github-require-keyword-prefix: # optional
+    # When set to true, ignore URLs prefixed with "Related".
+    github-enable-related-keyword-prefix: # optional
+    # Throw an error if no Trello cards can be found in the PR description.
+    github-require-trello-card: # optional
+    # Include PR comments when searching for Trello cards.
+    github-include-pr-comments: # optional, default is true
+    # Include PR commit messages when searching for Trello cards. If card ID is found, it automatically comments card URL to the PR.
+    github-include-pr-commit-messages: # optional
+    # Include PR branch name when searching for Trello cards (e.g. "1234-card-title"). If card ID is found, it automatically comments card URL to the PR.
+    github-include-pr-branch-name: # optional
+    # Allows to reference multiple card short IDs in the branch name (e.g. feature/38-39-40-foo-bar). Option github-include-pr-branch-name needs to be true.
+    github-allow-multiple-cards-in-pr-branch-name: # optional
+    # Creates a new Trello card from PR details if "/new-trello-card" is written in the PR description. Replaces "/new-trello-card" with the card link.
+    github-include-new-card-command: # optional
+    # Creates a new Trello card from PR details if no card is linked and the PR is merged. Adds card link to the PR description.
+    github-create-new-card-on-merge: # optional
+    # Newline-separated list of mapping between Github username and Trello username. Example:
+github-users-to-trello-users: |-
+  GithubUser1:TrelloUser1
+  GithubUser2:TrelloUser2
+    github-users-to-trello-users: # optional
+    # Trello API key, visit https://trello.com/app-key for key.
+    trello-api-key: 
+    # Trello auth token, visit https://trello.com/app-key then click generate a token.
+    trello-auth-token: 
+    # Your organization name to avoid assigning cards to outside members. Edit your workspace details and look for the short name.
+    trello-organization-name: # optional
+    # Trello board ID where to move the cards.
+    trello-board-id: # optional
+    # Trello list ID for draft pull request.
+    trello-list-id-pr-draft: # optional
+    # Trello list ID for open pull request.
+    trello-list-id-pr-open: # optional
+    # Trello list ID for a pull request which has at least one review requesting for changes.
+    trello-list-id-pr-changes-requested: # optional
+    # Trello list ID for a pull request which has at least one approve and no reviews requesting for changes.
+    trello-list-id-pr-approved: # optional
+    # Trello list ID for merged pull request. If trello-archive-on-merge is set to true, the card is archived instead of moving to this list.
+    trello-list-id-pr-merged: # optional
+    # Trello list ID for closed pull request. If trello-list-id-pr-merged is set and card is merged, then the card will be moved to merged list.
+    trello-list-id-pr-closed: # optional
+    # Enable or disable the automatic addition of labels to cards.
+    trello-add-labels-to-cards: # optional, default is true
+    # When a card has one of these labels, branch category label is not assigned.
+    trello-conflicting-labels: # optional
+    # Position of the card after being moved to a list. Can be "top" or "bottom".
+    trello-card-position: # optional, default is top
+    # Adds PR author, contributors and assignees to the Trello card.
+    trello-add-members-to-cards: # optional, default is true
+    # Replaces Trello card members with PR reviewers when PR is opened. It reassigns the PR author, contributors and assignees when the card is moved away from trello-list-id-pr-open.
+    trello-switch-members-in-review: # optional
+    # Removes card members who are not authors or assignees of the PR.
+    trello-remove-unrelated-members: # optional, default is true
+    # Archives Trello cards when PR is merged.
+    trello-archive-on-merge: # optional
+          
